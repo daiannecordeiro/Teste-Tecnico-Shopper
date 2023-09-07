@@ -5,9 +5,11 @@
   "author": "Daianne Cordeiro (daianne.nc@gmail.com)",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently \"yarn start:api\" \"yarn start:front\"",
+    "project:start": "concurrently \"yarn start:api\" \"yarn start:front\"",
     "start:api": "cd api && yarn dev",
-    "start:front": "cd front-end && yarn dev"
+    "start:front": "cd front-end && yarn dev",
+    "project:update": "concurrently \"yarn\" \"cd api && yarn\" \"cd front-end && yarn\"",
+    "project:genesis": "cd api && docker compose up && .."
   },
   "devDependencies": {
     "concurrently": "^8.2.1"

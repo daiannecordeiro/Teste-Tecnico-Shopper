@@ -18,7 +18,7 @@ export const CsvFileInput: FC = () => {
 	return (
 		<Container>
 			<FileInput type="file" accept=".csv" onChange={onFileChange} />
-			<UploadButton htmlFor="fileInput">VALIDAR CSV</UploadButton>
+			<UploadButton htmlFor="fileInput">VALIDAR</UploadButton>
 			{status && <StatusMessage>{status}</StatusMessage>}
 		</Container>
 	);

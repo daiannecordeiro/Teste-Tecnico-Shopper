@@ -23,6 +23,11 @@ export const TableHeader = styled.thead`
 
 export const TableData = styled.tbody`
 	text-align: left;
+	
+	:hover {
+		background-color: #CEE9D8;
+	}
+
 	td {
 		padding: 1rem 3rem;
 		border-bottom: 2px solid #4aac78;

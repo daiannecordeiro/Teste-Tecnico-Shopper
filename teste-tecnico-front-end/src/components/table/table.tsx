@@ -3,7 +3,6 @@ import { TableHeader, TableContainer, TableData } from './table.styles';
 import { useProducts } from '../../hooks/useProducts';
 import { LoadingSpinner } from '..';
 import { formatCurrency } from '../../utils/formatCurrency';
-import { useCheckApi } from '../../hooks/useCheckApi';
 
 export const Table: FC = () => {
 	interface IProduct {

@@ -8,6 +8,7 @@ export const NavbarContainer = styled.div`
 	padding: 1rem 3rem;
 	color: #fff;
 	h1 {
+		font-size: 1.5rem;
 		font-weight: 400;
 	}
 `;

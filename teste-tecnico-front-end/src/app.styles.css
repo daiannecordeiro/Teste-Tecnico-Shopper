@@ -1,0 +1,66 @@
+@import 'sanitize.css';
+@import 'sanitize.css/typography.css';
+@import 'sanitize.css/forms.css';
+
+html,
+body {
+	width: 100vw;
+	height: 100vh;
+	background-color: #fff;
+	overflow-x: hidden;
+	scroll-behavior: smooth;
+	overflow-y: visible;
+}
+
+.app-root {
+	flex-grow: 1;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+ul li {
+	list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a {
+	font-family: 'Montserrat', sans-serif;
+}
+
+::-webkit-scrollbar {
+	width: 0.75rem;
+	background-color: #DDE7CE;
+}
+
+::-webkit-scrollbar-track {
+	margin-top: 4rem;
+}
+
+::-webkit-scrollbar-thumb {
+	background: -webkit-linear-gradient(
+		top,
+		#DDE7CE,
+		#5BCE90
+	);
+	border-radius: 0.5rem;
+	background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+	transition: all 0.5s ease-in-out;
+	background:  -webkit-linear-gradient(
+		top,
+		#DDE7CE,
+		#1E2044
+	);
+	background-clip: content-box;
+}
+

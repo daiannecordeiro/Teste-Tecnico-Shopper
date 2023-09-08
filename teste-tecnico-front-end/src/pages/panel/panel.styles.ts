@@ -16,5 +16,5 @@ export const PanelContentContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	overflow-x: hidden;
-	padding-top: 10rem;
+	padding: 10rem 5rem;
 `;

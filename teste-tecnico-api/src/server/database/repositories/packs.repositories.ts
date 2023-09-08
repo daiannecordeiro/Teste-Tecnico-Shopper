@@ -9,4 +9,4 @@ const getPacks = async (): Promise<IPacks[]> => {
   return packs;
 };
 
-export { getPacks };
+export { packsRepository, getPacks };

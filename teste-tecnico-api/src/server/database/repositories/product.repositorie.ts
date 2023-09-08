@@ -27,7 +27,7 @@ const getProducts = async (): Promise<IProducts[]> => {
   return products;
 };
 
-const updateProducts = async (
+const verifyUpdateProducts = async (
   products: ProcessedProduct[]
 ): Promise<UpdateResult[]> => {
   const results: UpdateResult[] = [];
@@ -111,16 +111,13 @@ const updateProducts = async (
         return;
       }
 
-      productToUpdate.sales_price = product.sales_price;
-      await ProductRepository.save(productToUpdate);
-
       results.push({
         code: product.code,
         name: productToUpdate.name,
         cost_price: productToUpdate.cost_price,
         old_sales_price: productToUpdate.sales_price,
         new_sales_price: product.sales_price,
-        message: 'Preço atualizado com sucesso',
+        message: 'Alteração de preço autorizada',
         success: true,
         isPack: isPack ? true : false,
         isPartOfPack: isPartOfPack ? true : false,
@@ -131,7 +128,7 @@ const updateProducts = async (
   return results;
 };
 
-const updateRelatedProducts = async (results: UpdateResult[]) => {
+const verifyUpdateRelatedProducts = async (results: UpdateResult[]) => {
   const productsToUpdate: ProcessedProduct[] = [];
 
   await Promise.all(
@@ -159,22 +156,50 @@ const updateRelatedProducts = async (results: UpdateResult[]) => {
         if (pack) {
           productsToUpdate.push({
             code: pack.pack_id,
-            sales_price:
-              result.new_sales_price * pack.qty,
+            sales_price: result.new_sales_price * pack.qty,
           });
         }
       }
     })
   );
 
-  const updateResults = await updateProducts(productsToUpdate);
+  const updateResults = await verifyUpdateProducts(productsToUpdate);
 
   return updateResults;
+};
+
+const allSuccess = async (products: ProcessedProduct[]) => {
+  const result1 = await verifyUpdateProducts(products);
+  const result2 = await verifyUpdateRelatedProducts(result1);
+  const result = [...result1, ...result2];
+
+  const allSuccess = result.every((item) => item.success === true);
+
+  if (allSuccess) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const updateProducts = async (products: UpdateResult[]) => {
+  await Promise.all(
+    products.map(async (item) => {
+      if (item.success) {
+        await ProductRepository.update(
+          { code: item.code },
+          { sales_price: item.new_sales_price }
+        );
+      }
+    })
+  );
 };
 
 export default {
   ProductRepository,
   getProducts,
+  verifyUpdateProducts,
+  verifyUpdateRelatedProducts,
+  allSuccess,
   updateProducts,
-  updateRelatedProducts,
 };

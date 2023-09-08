@@ -23,6 +23,59 @@ productRouter.get(
 );
 
 productRouter.post(
+  '/verify-csv',
+  multerConfig.single('file'),
+  async (req: Request, res: Response) => {
+    const { file } = req;
+    const buffer = file?.buffer;
+
+    const readableFile = new Readable();
+    readableFile.push(buffer);
+    readableFile.push(null);
+    const productsLine = readline.createInterface({
+      input: readableFile,
+    });
+
+    const products: IUpdateProducts[] = [];
+    let isFirstLine = true;
+
+    for await (const line of productsLine) {
+      if (isFirstLine) {
+        isFirstLine = false;
+        continue; // Ignorar a primeira linha
+      }
+
+      const productsLineSplit = line.split(',');
+      products.push({
+        code: Number(productsLineSplit[0]),
+        sales_price: Number(productsLineSplit[1]),
+      });
+    }
+
+    const result1 = await ProductRepository.verifyUpdateProducts(products);
+    const result2 = await ProductRepository.verifyUpdateRelatedProducts(
+      result1
+    );
+    const isUpdateAuthorized = await ProductRepository.allSuccess(products);
+
+    if (isUpdateAuthorized) {
+      await ProductRepository.updateProducts(result1);
+      return res.status(StatusCodes.OK).json({
+        message: 'Preços atualizados com sucesso',
+        isUpdateAuthorized: true,
+        result: [...result1, ...result2],
+      });
+    } else {
+      return res.status(StatusCodes.OK).json({
+        message: 'Não autorizado a atualizar preços',
+        isUpdateAuthorized: false,
+        result: [...result1, ...result2],
+      });
+    }
+  }
+);
+
+productRouter.post(
   '/update-prices-by-csv',
   multerConfig.single('file'),
   async (req: Request, res: Response) => {
@@ -52,13 +105,26 @@ productRouter.post(
       });
     }
 
-    const result1 = await ProductRepository.updateProducts(products);
-    const result2 = await ProductRepository.updateRelatedProducts(result1);
-    console.log(result1, result2);
+    const result1 = await ProductRepository.verifyUpdateProducts(products);
+    const result2 = await ProductRepository.verifyUpdateRelatedProducts(
+      result1
+    );
     const result = [...result1, ...result2];
 
+    const isUpdateAuthorized = await ProductRepository.allSuccess(products);
 
-    return res.send({ result });
+    if (isUpdateAuthorized) {
+      await ProductRepository.updateProducts(result);
+      return res.status(StatusCodes.OK).json({
+        message: 'Preços atualizados com sucesso',
+        isUpdateAuthorized: true,
+      });
+    } else {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Não autorizado a atualizar preços',
+        isUpdateAuthorized: false,
+      });
+    }
   }
 );
 

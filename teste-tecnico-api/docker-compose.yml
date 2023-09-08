@@ -9,11 +9,11 @@ services:
         environment:
             - MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD
             - MYSQL_DATABASE=$MYSQL_DATABASE
-            - MYSQL_TCP_PORT=$MYSQL_DOCKER_PORT
+            - MYSQL_TCP_PORT=$MYSQL_LOCAL_PORT
         ports:
-            - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+            - $MYSQL_LOCAL_PORT:$MYSQL_LOCAL_PORT
         expose:
-            - $MYSQL_DOCKER_PORT
+            - $MYSQL_LOCAL_PORT
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
             timeout: 5s
@@ -31,7 +31,7 @@ services:
         env_file: ./.env
         environment:
             - MYSQL_HOST=mysqldb
-            - MYSQL_LOCAL_PORT=$MYSQL_DOCKER_PORT
+            - MYSQL_LOCAL_PORT=$MYSQL_LOCAL_PORT
             - MYSQL_DATABASE=$MYSQL_DATABASE
             - MYSQL_USERNAME=$MYSQL_USERNAME
             - MYSQL_PASSWORD=$MYSQL_PASSWORD

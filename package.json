@@ -6,10 +6,10 @@
   "license": "MIT",
   "scripts": {
     "project:start": "concurrently \"yarn start:api\" \"yarn start:front\"",
-    "start:api": "cd api && yarn dev",
+    "start:api": "cd teste-tecnico-api && yarn dev",
     "start:front": "cd front-end && yarn dev",
-    "project:update": "concurrently \"yarn\" \"cd api && yarn\" \"cd front-end && yarn\"",
-    "project:genesis": "cd api && docker compose up && .."
+    "project:update": "concurrently \"yarn\" \"cd teste-tecnico-api && yarn\" \"cd front-end && yarn\"",
+    "project:genesis": "yarn project:update && cd teste-tecnico-api && docker compose up -d && yarn orm:run"
   },
   "devDependencies": {
     "concurrently": "^8.2.1"

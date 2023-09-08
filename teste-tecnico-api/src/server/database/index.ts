@@ -1,6 +1,9 @@
-import { DataSource } from 'typeorm';
 import 'dotenv/config';
+import 'reflect-metadata';
+import { DataSource } from 'typeorm';
 import { CreateTables1694131500744 } from './migrations/1694131500744-CreateTables';
+import { Packs } from './entities/packs';
+import { Product } from './entities/product';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -11,7 +14,7 @@ export const AppDataSource = new DataSource({
   database: process.env.MYSQL_DATABASE,
   synchronize: true,
   logging: false,
-  entities: [],
+  entities: [Packs, Product],
   migrations: [CreateTables1694131500744],
   subscribers: [],
 });

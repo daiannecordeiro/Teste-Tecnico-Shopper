@@ -59,9 +59,8 @@ productRouter.post(
     const isUpdateAuthorized = await ProductRepository.allSuccess(products);
 
     if (isUpdateAuthorized) {
-      await ProductRepository.updateProducts(result1);
       return res.status(StatusCodes.OK).json({
-        message: 'Preços atualizados com sucesso',
+        message: 'Preços autorizados',
         isUpdateAuthorized: true,
         result: [...result1, ...result2],
       });

@@ -16,20 +16,26 @@ export const FileInput = styled.input`
 	border-radius: 1rem;
 `;
 
-export const UploadButton = styled.label`
+export const UploadButton = styled.button<{
+	isActive?: boolean
+}>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	padding: 10px 20px;
-	background-color: #4aac78;
+	background-color: ${({ isActive }) => (isActive ? '#4aac78' : '#ccc')};
 	color: #fff;
-	cursor: pointer;
+	cursor: ${({ isActive }) => (isActive ? 'pointer' : 'not-allowed')};
 	border-radius: 1rem;
 	height: 66px;
 	margin: 1rem;
+	pointer-events:${({ isActive }) => (isActive ? 'auto' : 'none')};
+	width: 8rem;
 `;
 
-export const StatusMessage = styled.div`
-	margin-top: 10px;
-	font-weight: bold;
+export const StatusMessage = styled.span`
+	margin-bottom: 2rem;
+	font-weight: 400;
+	text-align: right;
+	width: 78vw;
 `;

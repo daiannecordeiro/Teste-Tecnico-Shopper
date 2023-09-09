@@ -1,0 +1,1 @@
+export { AlteredProductsTable } from './alteredProductsTable'
